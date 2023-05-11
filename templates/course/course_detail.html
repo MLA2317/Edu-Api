@@ -1,0 +1,223 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<section class="site-hero site-sm-hero overlay" data-stellar-background-ratio="0.5"
+         style="background-image: url({% static 'images/big_image_2.jpg' %});">
+    <div class="container">
+        <div class="row align-items-center justify-content-center site-hero-sm-inner">
+            <div class="col-md-7 text-center">
+                <div class="mb-5 element-animate">
+                    <h1 class="mb-2">{{ object.title }}</h1>
+                    <p class="bcrumb"><a href="{% url 'main:index' %}">Home</a> <span
+                            class="sep ion-android-arrow-dropright px-2"></span> <a href="{% url 'course:course' %}">Course</a>
+                        <span
+                                class="sep ion-android-arrow-dropright px-2"></span> <span class="current">{{ object.title }}</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="site-section bg-light element-animate">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-lg-8 order-md-2 mb-5">
+                <div class="row">
+                    <div class="col-md-12">
+                        <img style="width:300px" src="{{ object.cover.url }}" alt="" class="img-fluid">
+                    </div>
+                </div>
+                <section class="episodes">
+                    <div class="container">
+                        <div class="row mb-5">
+                            <div class="col-md-12 pt-5">
+                                <h2>Description</h2>
+                                <p>{{ object.body|safe }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12 mb-2">
+                                <h2>Lesson</h2>
+                            </div>
+                        </div>
+                        {% for lesson in object.lesson_set.all %}
+                                               <! # forloop - bu order by ga oxshab ishlidi, count - bu qadamini olib beradi
+                                                    # divisibleby - bu 2 ga bolinadiagn chiqarsn !>
+                            <div class="row {% if not forloop.counter|divisibleby:2 %} bg-light{% endif %} align-items-center p-4 episode">
+                            <div class="col-md-10">
+                                <p class="meta">Episode {{ forloop.counter }} </p>
+                                <h2><a href="{% url 'course:lesson_detail' object.id lesson.id %}">{{ lesson.title }}</a></h2>
+                                <p>{{ lesson.body|safe|slice:'100' }}</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </section>
+            </div>
+
+            <div class="col-md-6 col-lg-4 order-md-1">
+                <div class="block-29 mb-5">
+                    <h2 class="heading">Course Details</h2>
+                    <ul>
+                        <li><span class="text-1">Lesson:</span> <span
+                                class="text-2">{{ object.lesson_set.count }}</span></li>
+                        <li><span class="text-1">Difficulty:</span> <span class="text-2">{{ object.get_difficulty_display }}</span>
+                        </li>
+                        <li><span class="text-1">Language:</span> <span class="text-2">English</span></li>
+                        <li><span class="text-1">Price:</span>
+                            {% if discount_price %}
+                            <del class="mr-3">${{ course.price }}</del>
+                            {% endif %}
+                            {% if course.is_free %}
+                            <span>Free</span>
+                            {% else %}
+                            <del class="mr-3">${{ course.price }}</del>
+                            {% endif %}
+                        </li>
+                    </ul>
+                </div>
+                <div class="block-28 text-center mb-5">
+                    <figure>
+                        <img src="
+                        {% if object.author.image %}
+                            {{ object.author.image.url }}
+                        {% else %}
+                            {% static 'images/anonymous .png' %}
+                        {% endif %}
+                        " alt="" class="img-fluid">
+                    </figure>
+                    <h2 class="heading">{{ object.author.user.username }}</h2>
+                    <h3 class="subheading">{{ object.author.bio }}</h3>
+                    <p>
+                        <a href="#" class="fa fa-twitter p-2"></a>
+                        <a href="#" class="fa fa-facebook p-2"></a>
+                        <a href="#" class="fa fa-linkedin p-2"></a>
+                    </p>
+                    <p>Hi I'm Mark Stewart, consectetur adipisicing elit. Quibusdam nulla beatae modi itaque nemo magni
+                        molestiae explicabo sint dolorum cum! Nam iste eligendi autem voluptates illo veritatis veniam
+                        laudantium enim!</p>
+                </div>
+                <div class="block-25 mb-5">
+                    <div class="heading">Recent Courses</div>
+                    <ul>
+                        {% for course in recent_courses %}
+                        <li>
+                            <a href="{% url 'course:detail' course.id %}" class="d-flex">
+                                <figure class="image mr-3">
+                                    <img src="{{ course.cover.url }}" alt="" class="img-fluid">
+                                </figure>
+                                <div class="text">
+                                    <h3 class="heading">{{ course.title }}</h3>
+                                    <span class="meta">{% if course.discount_price %}
+                                                         <del class="mr-3">${{ course.discount_price }}</del>
+                                                        {% endif %}
+                                                        {% if course.price %}
+                                                             <span>${{ course.price }}</span>
+                                                        {% else %}
+                                                            <span>Free</span>
+                                                        {% endif %}
+                                    </span>
+                                </div>
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="block-24 mb-5">
+                    <h3 class="heading">Categories</h3>
+                    <ul>
+                        {% for category in categories %}
+                        <li>
+                            <a href="{% if request.GET %}{{ request.get_full_path }}&category={{ category.title }}{% else %}{{ request.get_full_path }}?category={{ category.title }}{% endif %}">
+                                {{ category.title }} <span>{{ category.post_set.count }}</span></a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="block-26">
+                    <h3 class="heading">Tags</h3>
+                    <ul>
+                        {% for tag in tags %}
+                        <li>
+                            <a href="{% url 'course:course' %}{% if request.GET %}{{ request.get_full_path }}&tag={{ tag.title }}{% else %}{{ request.get_full_path }}?tag={{ tag.title }}{% endif %}">
+                                {{ tag.title }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="site-section bg-light">
+    <div class="container">
+        <div class="row justify-content-center mb-5 element-animate">
+            <div class="col-md-7 text-left section-heading">
+                <h2 class="text-primary heading">You May Also Like</h2>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit qui neque sint eveniet tempore
+                    sapiente.</p>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid block-11 element-animate">
+        <div class="nonloop-block-11 owl-carousel">
+            {% for course in random_5_course %}
+            <div class="item">
+                <div class="block-19">
+                    <figure>
+                        <img src="{{ course.cover.url }}" alt="Image" class="img-fluid">
+                    </figure>
+                    <div class="text">
+                        <h2 class="heading"><a href="{% url 'course:detail' course.id }}">{{ course.title }}</a></h2>
+                        <p class="mb-4">{{ course.body|safe|slice:'100' }}</p>
+                        <div class="meta d-flex align-items-center">
+                            <div class="number">
+                                <span>{{ course.soldcourse_set.count}}/600</span>
+                            </div>
+                            <div class="price text-right">
+                                {% if course.discount_price %}
+                                <del class="mr-3">${{ course.discount_price }}</del>
+                                {% endif %}
+                                {% if course.price %}
+                                <span>${{ course.price }}</span>
+                                {% else %}
+                                <span>Free</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
+
+<div class="py-5 block-22">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6 mb-4 mb-md-0 pr-md-5">
+                <h2 class="heading">Create cool websites</h2>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi accusantium optio und.</p>
+            </div>
+            <div class="col-md-6">
+                <form action="#" class="subscribe">
+                    <div class="form-group">
+                        <input type="email" class="form-control email" placeholder="Enter email">
+                        <input type="submit" class="btn btn-primary submit" value="Subscribe">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+

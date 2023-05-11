@@ -1,0 +1,13 @@
+from rest_framework import serializers
+from ..models import Category, Tag, Contact, Subscribe, Answer, FAQ
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ['id', 'title']
+
+
+class TagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        fields = ['id', 'title']

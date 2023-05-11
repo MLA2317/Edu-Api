@@ -1,0 +1,50 @@
+{% load i18n %}
+{% get_current_language as CURRENT_LANGUAGE %}
+{% get_available_languages as AVAILABLE_LANGUAGES %}
+{% get_language_info_list for AVAILABLE_LANGUAGES as languages %}
+
+<header role="banner">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand absolute" href="{% url 'main:index' %}">University</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample05"
+                    aria-controls="navbarsExample05" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse navbar-light" id="navbarsExample05">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'main:index' %}">Home</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="{% url 'course:course' %}">Courses</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'blog:blog' %}">Blog</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'main:about' %}">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'main:contact' %}">Contact</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav absolute-right">
+                    <li>
+                        {% if request.user.is_authenticated %}
+                            <a href="{% url 'account:info' %}"> {{ request.user.username }}</a> <a href="{% url 'account:logout' %}">Logout</a>
+                        {% else %}
+                            <a href="{% url 'account:login' %}">Login</a> / <a href="{% url 'account:register' %}">Register</a>
+                        {% endif %}
+                    </li>
+
+<!--                    {% for language in languages %}-->
+<!--                    <li class="nav-item">-->
+<!--                        <a class="nav-link" href="/{{ language.code }}/">{{ language.name }} /</a>-->
+<!--                    </li>-->
+<!--                    {% endfor %}-->
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>

@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<section class="site-hero site-sm-hero overlay" data-stellar-background-ratio="0.5"
+         style="background-image: url({{ lesson.course.cover.url }});">
+    <div class="container">
+        <div class="row align-items-center justify-content-center site-hero-sm-inner">
+            <div class="col-md-7 text-center">
+                <div class="mb-5 element-animate">
+                    <h1 class="mb-2">{{ lesson.title }}</h1>
+                    <p class="bcrumb"><a href="{% url 'main:index' %}">Home</a> <span
+                            class="sep ion-android-arrow-dropright px-2"></span> <a href="{% url 'course:course' %}">Course</a> <span
+                            class="sep ion-android-arrow-dropright px-2"></span> <span class="current">{{ lesson.course.title }}</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="site-section bg-light element-animate">
+    <div class="container" style="background-color: #b22222;">
+        <div class="row">
+             <div class="col-md-12 pt-1">
+                 <h2>Description</h2>
+                 <p>{{ object.body|safe }}</p>
+             </div>
+            <div class="col-md-12 col-lg-12 order-md-2 mb-1">
+
+                <div class="col-md-12 mb-2">
+                    <video style="width: 100%" controls src="{{ main_lesson.file.url }}"></video>
+                </div>
+                <div class="show_comments mt-1">
+                    <pre><h5><span class="fa fa-eye" style="color: #fff;"> {{ main_lesson.views }}</span></h5></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="site-section bg-light">
+    <div class="container">
+        <div class="row justify-content-center mb-5 element-animate">
+            <div class="col-md-7 text-left section-heading">
+                <h2 class="text-primary heading">You May Also Like</h2>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit qui neque sint eveniet tempore
+                    sapiente.</p>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid block-11 element-animate">
+        <div class="nonloop-block-11 owl-carousel">
+            {% for random in random_5_courses %}
+            <div class="item">
+                <div class="block-19">
+                    <figure>
+                        <img src="{{ random.cover.url }}" alt="Image" class="img-fluid">
+                    </figure>
+                    <div class="text">
+                        <h2 class="heading"><a href="{% url 'course:detail' random.id %}">{{ random.title }}</a></h2>
+                        <p class="mb-4">{{ random.body|safe|slice:"200" }}</p>
+                        <div class="meta d-flex align-items-center">
+                            <div class="number">
+                                <span>{{ random.soldcourse_set.count}}/600</span>
+                            </div>
+                            <div class="price text-right">
+                                {% if random.discount_price %}
+                                     <del class="mr-3">${{ random.discount_price }}</del>
+                                {% endif %}
+                                {% if random.is_free %}
+                                    <span>Free</span>
+                                {% else %}
+                                     <span>${{ random.price }}</span>
+                                {% endif %}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
+
+<div class="py-5 block-22">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6 mb-4 mb-md-0 pr-md-5">
+                <h2 class="heading">Create cool websites</h2>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi accusantium optio und.</p>
+            </div>
+            <div class="col-md-6">
+                <form action="#" class="subscribe">
+                    <div class="form-group">
+                        <input type="email" class="form-control email" placeholder="Enter email">
+                        <input type="submit" class="btn btn-primary submit" value="Subscribe">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+

@@ -1,0 +1,29 @@
+{% extends 'account/base_dashboard.html' %}
+{% block content %}
+<div class="row">
+                        <div class="col-md-12">
+                            <h2>Admin Dashboard</h2>
+                        </div>
+                    </div>
+
+<div class="row">
+                        <div class="col-md-12">
+                        <p>
+                            <b>First name: </b>{% if profile.user.first_name %} {{ profile.user.first_name }} {% else %} No first name {% endif %}
+                        </p>
+                        <p>
+                            <b>Last name: </b>{% if profile.user.last_name %} {{ profile.user.last_name }} {% else %} No last name {% endif %}
+                        </p>
+                        <p>
+                            <b>Email: </b>{% if profile.user.email %}  {{ profile.user.email }} {% else %}  No email {% endif %}
+                        </p>
+                        <p>
+                            <b>Bio: </b>{% if profile.bio %} {{ profile.bio }}{% else %}  No profile {% endif %}
+                        </p>
+                        </div>
+                        <div class="col-md-12">
+                            <a href="{% url 'account:update' profile.id %}" class="btn btn-primary">Profile update</a>
+                            <a href="{% url 'account:change_password' %}" class="btn btn-primary">Change password</a>
+                        </div>
+                    </div>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'account/base_dashboard.html' %}
+{% block content %}
+  <div class="row">
+    {% if mycourse %}
+    {% for course in mycourse %}
+      <div class="card mb-3" style="max-width: 540px;">
+          <div class="row g-0">
+              <div class="col-md-4">
+                  <img style="width:170px;" src="{{ course.course.cover.url }}" class="img-fluid rounded-start" alt="...">
+              </div>
+              <div class="col-md-8">
+                  <div class="card-body">
+                      <h5 class="card-title">{{ course.course.title }}</h5>
+                      <p class="card-text">{{ course.course.body|safe|slice:200}}</p>
+                      <p class="card-text"><small class="text-muted">{{ course.course.created_date|date}}</small></p>
+                      <a href="{% url 'course:detail' course.course.id %}" class="btn btn-primary">Go course</a>
+                  </div>
+              </div>
+          </div>
+      </div>
+    {% endfor %}
+    {% else %}
+    <h1>No course has yet</h1>
+    {% endif %}
+  </div>
+{% endblock %}

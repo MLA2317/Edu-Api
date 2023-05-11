@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+
+<section class="site-section" style="margin-top: 100px;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-7">
+                <div class="form-wrap">
+                    <h2 class="mb-4"> Are you sure to logout ?</h2>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <input type="submit" value="Yes" class="btn btn-primary px-5 py-2">
+                                <a href="{% url 'main:index' %}">cancel</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </ div>
+</section>
+{% endblock %}
